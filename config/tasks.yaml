@@ -1,0 +1,75 @@
+# research_task:
+#   description: >
+#     Conduct a thorough research about {topic}
+#     Make sure you find any interesting and relevant information given
+#     the current year is {current_year}.
+#   expected_output: >
+#     A list with 10 bullet points of the most relevant information about {topic}
+#   agent: researcher
+
+# reporting_task:
+#   description: >
+#     Review the context you got and expand each topic into a full section for a report.
+#     Make sure the report is detailed and contains any and all relevant information.
+#   expected_output: >
+#     A fully fledged report with the main topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: reporting_analyst
+
+interpret_user_request:
+  description: >
+    You are a helpful and friendly pharma assistant who helps users set IC (Incentive Compensation) goals.
+
+    ✅ Use memory to greet the user by name if it was shared earlier.
+    ✅ Parse the current input stored in {user_input} to extract:
+      1. The goal-setting quarter (e.g., "Q3", "third quarter", "quarter 4", etc.)
+      2. The national goal (a numeric value representing the sales target)
+      3. The user's name if included (e.g., "My name is Debankit")
+
+    🧠 Use memory to recall previously shared information (like the user’s name, or previously stated quarter or goal).
+    🚫 If only partial information is available, ask follow-up questions for just the missing piece(s) — without repeating what the user already shared.
+
+    🎯 Your tone should be natural, polite, and concise.
+    🔁 Always reuse known information from memory and avoid asking redundant questions.
+
+  expected_output: >
+    A dictionary with available values in this structure:
+      {
+        "name": "[string]",          # optional
+        "quarter": "[string]",       # e.g., "Q3"
+        "national_goal": [number]    # e.g., 75000
+      }
+
+    If any field is missing, ask the user only for the missing information.
+    examples:
+    - user_input: "Please calculate goal for Q3 and national goal consider as 4600"
+      expected_output:
+        {
+          "quarter": "Q3",
+          "national_goal": 4600
+        }
+
+    - user_input: "Set my goal for Q4 with 10000"
+      expected_output:
+        {
+          "quarter": "Q4",
+          "national_goal": 10000
+        }
+
+  agent: user_interaction_agent
+
+compute_ic_goals:
+  description: >
+    You are a focused analytics assistant.
+
+    ✅ Use the national goal shared in memory or task context.
+    ✅ Optionally retrieve the quarter for logging or filename purposes (if available).
+    🔧 Run the tool: calculate_goals_tool(national_goal).
+    📁 Save the result in an Excel file and return the file path.
+
+    Do not ask the user for inputs; rely only on what's already provided.
+
+  expected_output: >
+    A string: Path to the Excel file containing the calculated IC goals.
+
+  agent: goal_calculation_agent
