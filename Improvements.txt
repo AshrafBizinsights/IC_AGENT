@@ -1,0 +1,14 @@
+Scenario
+1. If the anomaly occur in the historical goals data, but there was no disaster to it, we will consider it not much significant and its corresponding month will used in calculating the baseline goal.
+
+2. If the disaster occur, we need to categorized based on its severity and duration of it, if the duration is more than 15 days, it will consider that disaster might have affect the goals in that particular territory.
+
+3. If an anomaly occur due to disaster in the historical goal, we will not consider that month in calculating the baseline goal.
+
+
+
+
+Upcoming work
+1. Use Agentic AI framework, so that model can understand context and call the appropriate function, 
+2. Use API to connect to the Fema database, and cross verify the anomalies in the file.
+
