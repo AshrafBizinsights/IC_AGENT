@@ -17,8 +17,7 @@ import os
 from KPI import get_kpi_html_block
 import time
 
-load_dotenv()
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
 
 st.set_page_config(page_title="ICAgents Goal Assistant", layout="wide")
 GOAL_DATA_PATH = r"C:\IC Agents\crewai\icagents\Goal Setting sanitized Data.xlsx"
